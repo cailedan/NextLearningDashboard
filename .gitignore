@@ -34,3 +34,24 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Windows
+*.log
+*.tmp
+
+# pnpm
+.pnpm-store/
+
+# Optional: 如果不想提交 lock 文件（通常建议提交）
+# pnpm-lock.yaml
+# package-lock.json
+# yarn.lock
