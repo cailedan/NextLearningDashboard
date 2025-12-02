@@ -1,5 +1,9 @@
+'use client';
+
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { deleteInvoice } from '@/app/lib/actions';
+import { useTransition } from 'react';
 
 export function CreateInvoice() {
   return (
@@ -16,7 +20,7 @@ export function CreateInvoice() {
 export function UpdateInvoice({ id }: { id: string }) {
   return (
     <Link
-      href="/dashboard/invoices"
+      href={`/dashboard/invoices/${id}/edit`}
       className="rounded-md border p-2 hover:bg-gray-100"
     >
       <PencilIcon className="w-5" />
@@ -25,12 +29,29 @@ export function UpdateInvoice({ id }: { id: string }) {
 }
 
 export function DeleteInvoice({ id }: { id: string }) {
+  const [isPending, startTransition] = useTransition();
+  const deleteInvoiceWithId = deleteInvoice.bind(null, id);
+
   return (
-    <>
-      <button type="submit" className="rounded-md border p-2 hover:bg-gray-100">
+    <form
+      action={() => {
+        startTransition(() => {
+          deleteInvoiceWithId();
+        });
+      }}
+    >
+      <button
+        type="submit"
+        disabled={isPending}
+        className="rounded-md border p-2 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
         <span className="sr-only">Delete</span>
-        <TrashIcon className="w-5" />
+        {isPending ? (
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-gray-300 border-t-gray-600"></div>
+        ) : (
+          <TrashIcon className="w-5" />
+        )}
       </button>
-    </>
+    </form>
   );
 }
